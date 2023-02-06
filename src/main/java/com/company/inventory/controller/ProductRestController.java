@@ -70,7 +70,7 @@ public class ProductRestController {
 		ResponseEntity<ProductResponseRest> response = productService.searchById(id);
 		return response;
 	}
-
+	
 	/**
 	 * Search by name
 	 * @param id
@@ -90,6 +90,17 @@ public class ProductRestController {
 	@DeleteMapping("/products/{id}")
 	public ResponseEntity<ProductResponseRest> deleteById(@PathVariable Long id){
 		ResponseEntity<ProductResponseRest> response = productService.deleteById(id);
+		return response;
+	}
+	
+	/**
+	 * Search by id
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/products")
+	public ResponseEntity<ProductResponseRest> search(){
+		ResponseEntity<ProductResponseRest> response = productService.search();
 		return response;
 	}
 

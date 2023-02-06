@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -67,9 +66,9 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	@Transactional (readOnly=true)
+	@Transactional(readOnly = true)
 	public ResponseEntity<ProductResponseRest> searchById(Long id) {
-		
+
 		ProductResponseRest response = new ProductResponseRest();
 		List<Product> list = new ArrayList<>();
 
@@ -77,8 +76,8 @@ public class ProductServiceImpl implements IProductService {
 			// Search product by id
 			Optional<Product> product = productDao.findById(id);
 			if (product.isPresent()) {
-				
-				byte[] imageDescompressed= Util.decompressZLib(product.get().getPicture());
+
+				byte[] imageDescompressed = Util.decompressZLib(product.get().getPicture());
 				product.get().setPicture(imageDescompressed);
 				list.add(product.get());
 				response.getProduct().setProducts(list);
@@ -96,29 +95,27 @@ public class ProductServiceImpl implements IProductService {
 
 		return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
 	}
-	
 
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional(readOnly = true)
 	public ResponseEntity<ProductResponseRest> searchByName(String name) {
 		ProductResponseRest response = new ProductResponseRest();
 		List<Product> list = new ArrayList<>();
 		List<Product> listAux = new ArrayList<>();
 
-
 		try {
 			// Search product by name
 			listAux = productDao.findByNameContainingIgnoreCase(name);
-			
+
 			if (listAux.size() > 0) {
-				
+
 				listAux.stream().forEach((p) -> {
-					byte[] imageDescompressed= Util.decompressZLib(p.getPicture());
+					byte[] imageDescompressed = Util.decompressZLib(p.getPicture());
 					p.setPicture(imageDescompressed);
 					list.add(p);
 
 				});
-				
+
 				response.getProduct().setProducts(list);
 				response.setMetadata("Respuesta OK", "00", "Productos encontrados");
 
@@ -144,7 +141,7 @@ public class ProductServiceImpl implements IProductService {
 		try {
 			// Delete product by id
 			productDao.deleteById(id);
-				response.setMetadata("Respuesta OK", "00", "Producto eliminado");
+			response.setMetadata("Respuesta OK", "00", "Producto eliminado");
 
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -154,5 +151,41 @@ public class ProductServiceImpl implements IProductService {
 
 		return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
 	}
-	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<ProductResponseRest> search() {
+		ProductResponseRest response = new ProductResponseRest();
+		List<Product> list = new ArrayList<>();
+		List<Product> listAux = new ArrayList<>();
+
+		try {
+			// Search product by name
+			listAux = (List<Product>) productDao.findAll();
+
+			if (listAux.size() > 0) {
+
+				listAux.stream().forEach((p) -> {
+					byte[] imageDescompressed = Util.decompressZLib(p.getPicture());
+					p.setPicture(imageDescompressed);
+					list.add(p);
+
+				});
+
+				response.getProduct().setProducts(list);
+				response.setMetadata("Respuesta OK", "00", "Productos encontrados");
+
+			} else {
+				response.setMetadata("Respuesta No OK", "-1", "Productos no encontrados");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+			response.setMetadata("Respuesta No OK", "-1", "Error al buscar productos");
+			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
+	}
+}
