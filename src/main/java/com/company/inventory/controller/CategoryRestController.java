@@ -16,71 +16,74 @@ import com.company.inventory.model.Category;
 import com.company.inventory.response.CategoryResponseRest;
 import com.company.inventory.services.ICategoryService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1")
 public class CategoryRestController {
 
 	@Autowired
 	private ICategoryService service;
-	
+
 	/**
 	 * Get all categories
+	 * 
 	 * @return
 	 */
 	@GetMapping("/categories")
-	public ResponseEntity<CategoryResponseRest> searchCategories(){
-		
+	public ResponseEntity<CategoryResponseRest> searchCategories() {
+
 		ResponseEntity<CategoryResponseRest> response = service.search();
 		return response;
 	}
-	
+
 	/**
 	 * Get categories by id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/categories/{id}")
-	public ResponseEntity<CategoryResponseRest> searchCategoriesById(@PathVariable Long id){
-		
+	public ResponseEntity<CategoryResponseRest> searchCategoriesById(@PathVariable Long id) {
+
 		ResponseEntity<CategoryResponseRest> response = service.searchById(id);
 		return response;
 	}
-	
+
 	/**
 	 * Save categories
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@PostMapping("/categories")
-	public ResponseEntity<CategoryResponseRest> save(@RequestBody Category category){
-		
+	public ResponseEntity<CategoryResponseRest> save(@RequestBody Category category) {
+
 		ResponseEntity<CategoryResponseRest> response = service.save(category);
 		return response;
 	}
-	
+
 	/**
-	 * Update categories
-	 * Save categories
+	 * Update categories Save categories
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@PutMapping("/categories/{id}")
-	public ResponseEntity<CategoryResponseRest> update(@RequestBody Category category, @PathVariable Long id){
-		
+	public ResponseEntity<CategoryResponseRest> update(@RequestBody Category category, @PathVariable Long id) {
+
 		ResponseEntity<CategoryResponseRest> response = service.update(category, id);
 		return response;
 	}
-	
+
 	/**
-	 * Delete categories by id
-	 * Save categories
+	 * Delete categories by id Save categories
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/categories/{id}")
-	public ResponseEntity<CategoryResponseRest> delete(@PathVariable Long id){
-		
+	public ResponseEntity<CategoryResponseRest> delete(@PathVariable Long id) {
+
 		ResponseEntity<CategoryResponseRest> response = service.deleteById(id);
 		return response;
 	}

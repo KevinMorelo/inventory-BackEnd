@@ -157,9 +157,9 @@ public class CategoryServiceImpl implements ICategoryService {
 	public ResponseEntity<CategoryResponseRest> deleteById(Long id) {
 
 		CategoryResponseRest response = new CategoryResponseRest();
-		
+
 		try {
-			
+
 			categoryDao.deleteById(id);
 			response.setMetadata("Respuesta OK", "00", "Registro Eliminado");
 

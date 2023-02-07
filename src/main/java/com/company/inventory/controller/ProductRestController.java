@@ -25,9 +25,9 @@ import com.company.inventory.util.Util;
 @RestController
 @RequestMapping("/api/v1")
 public class ProductRestController {
-	
+
 	private IProductService productService;
-	
+
 	public ProductRestController(IProductService productService) {
 		super();
 		this.productService = productService;
@@ -35,6 +35,7 @@ public class ProductRestController {
 
 	/**
 	 * Save products
+	 * 
 	 * @param picture
 	 * @param name
 	 * @param price
@@ -44,69 +45,71 @@ public class ProductRestController {
 	 * @throws IOException
 	 */
 	@PostMapping("/products")
-	public ResponseEntity<ProductResponseRest> save(
-			@RequestParam("picture") MultipartFile picture,
-			@RequestParam("name") String name,
-			@RequestParam("price") int price,
-			@RequestParam("account") int account,
-			@RequestParam("categoryId") Long categoryID) throws IOException
-			{
-		
+	public ResponseEntity<ProductResponseRest> save(@RequestParam("picture") MultipartFile picture,
+			@RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("account") int account,
+			@RequestParam("categoryId") Long categoryID) throws IOException {
+
 		Product product = new Product();
 		product.setName(name);
 		product.setAccount(account);
 		product.setPrice(price);
 		product.setPicture(Util.compressZLib(picture.getBytes()));
-		
+
 		ResponseEntity<ProductResponseRest> response = productService.save(product, categoryID);
-		return response;	
+		return response;
 	}
+
 	/**
 	 * Search by id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/products/{id}")
-	public ResponseEntity<ProductResponseRest> searchById(@PathVariable Long id){
+	public ResponseEntity<ProductResponseRest> searchById(@PathVariable Long id) {
 		ResponseEntity<ProductResponseRest> response = productService.searchById(id);
 		return response;
 	}
-	
+
 	/**
 	 * Search by name
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/products/filter/{name}")
-	public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name){
+	public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name) {
 		ResponseEntity<ProductResponseRest> response = productService.searchByName(name);
 		return response;
 	}
 
 	/**
 	 * Delete by id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/products/{id}")
-	public ResponseEntity<ProductResponseRest> deleteById(@PathVariable Long id){
+	public ResponseEntity<ProductResponseRest> deleteById(@PathVariable Long id) {
 		ResponseEntity<ProductResponseRest> response = productService.deleteById(id);
 		return response;
 	}
-	
+
 	/**
 	 * Search by id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/products")
-	public ResponseEntity<ProductResponseRest> search(){
+	public ResponseEntity<ProductResponseRest> search() {
 		ResponseEntity<ProductResponseRest> response = productService.search();
 		return response;
 	}
 
 	/**
 	 * Update products
+	 * 
 	 * @param picture
 	 * @param name
 	 * @param price
@@ -114,27 +117,22 @@ public class ProductRestController {
 	 * @paramcategoryID
 	 * @return
 	 * @throws IOException
-	 */	
+	 */
 	@PutMapping("/products/{id}")
-	public ResponseEntity<ProductResponseRest> update(
-			@RequestParam("picture") MultipartFile picture,
-			@RequestParam("name") String name,
-			@RequestParam("price") int price,
-			@RequestParam("account") int account,
-			@RequestParam("categoryId") Long categoryID,
-			@PathVariable Long id) throws IOException
-			
+	public ResponseEntity<ProductResponseRest> update(@RequestParam("picture") MultipartFile picture,
+			@RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("account") int account,
+			@RequestParam("categoryId") Long categoryID, @PathVariable Long id) throws IOException
+
 	{
-		
+
 		Product product = new Product();
 		product.setName(name);
 		product.setAccount(account);
 		product.setPrice(price);
 		product.setPicture(Util.compressZLib(picture.getBytes()));
-		
+
 		ResponseEntity<ProductResponseRest> response = productService.update(product, id, id);
-		return response;	
-	}	
-	
+		return response;
+	}
 
 }

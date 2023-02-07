@@ -8,11 +8,10 @@ import org.springframework.data.repository.CrudRepository;
 import com.company.inventory.model.Product;
 
 public interface IProductDao extends CrudRepository<Product, Long> {
-	
+
 	@Query("select p from Product p where p.name like %?%1")
 	List<Product> findByNameLike(String name);
-	List<Product> findByNameContainingIgnoreCase(String name);
 
-	
+	List<Product> findByNameContainingIgnoreCase(String name);
 
 }
