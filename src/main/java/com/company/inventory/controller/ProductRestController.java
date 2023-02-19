@@ -132,7 +132,7 @@ public class ProductRestController {
 		product.setPrice(price);
 		product.setPicture(Util.compressZLib(picture.getBytes()));
 		
-		ResponseEntity<ProductResponseRest> response = productService.update(product, id, id);
+		ResponseEntity<ProductResponseRest> response = productService.update(product, categoryID, id);
 		return response;	
 	}	
 	
